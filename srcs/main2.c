@@ -18,27 +18,6 @@ int		expose_hook(t_e *e)
 	return (0);
 }
 
-// void	zoom_2(t_e *e, int x, int y)
-// {
-	
-// }
-
-// t_e		zoom(t_e e)
-// {
-// 	int		y;
-// 	int		x;
-
-// 	y = 0;
-// 	while (y != e.y)
-// 	{
-// 		x = -1;
-// 		while (++x != e.x)
-// 			zoom_2(&e, x, y);
-// 		y++;
-// 	}
-// 	return (e);
-// }
-
 t_e		init(t_e e)
 {
 	e.iteration_max = 25;
@@ -70,7 +49,7 @@ int		key_hook(int key, t_e *e)
 	 printf("key: %d\n",key );
 	if (key == 65307)
 		exit(0);
-	if (key == 65451)
+	if (key == 65451 || key == 61)
 	{
 		e->zoom_x = e->zoom_x * 1.2;
 		e->zoom_y = e->zoom_y *1.2;
@@ -78,13 +57,12 @@ int		key_hook(int key, t_e *e)
 		 e->x2 -= 100 / e->zoom_x;
 		 e->y1 += 100 / e->zoom_y;
 		 e->y2 -=100 / e->zoom_y;
-		 //e->iteration_max = e->iteration_max + 3;
 	}
 	if (key == 65365)
 		e->iteration_max = e->iteration_max + 10;
-	if (key == 65366)
+	if (key == 65366 && e->iteration_max > 10)
 		e->iteration_max = e->iteration_max - 10;
-	if (key == 65453)
+	if (key == 65453 || key == 45)
 	{
 		e->zoom_x = e->zoom_x * 0.8;
 		e->zoom_y = e->zoom_y * 0.8;
@@ -92,7 +70,6 @@ int		key_hook(int key, t_e *e)
 		 e->x2 += 100 / e->zoom_x;
 		 e->y1 -= 100 / e->zoom_y;
 		 e->y2 +=100 / e->zoom_y;
-	//	e->iteration_max = e->iteration_max - 3;
 	}
 	if (key == 65364)
 	{
@@ -115,12 +92,8 @@ int		key_hook(int key, t_e *e)
 		key == 65361 || key == 65363 || key == 114 ||
 		key == 112 || key == 105 || key == 65365 || key == 65366)
 	{
-		// *e = zoom(*e);
-		// mlx_destroy_image(e->mlx_ptr, e->img_ptr);
-		// mlx_clear_window(e->mlx_ptr, e->win_ptr);
 		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
 		e->img_ptr = mlx_new_image(e->mlx_ptr, 1000, 1000);
-		//e->data = mlx_get_data_addr(e->img_ptr, &(e->bpp), &(e->sizeline), &(e->endian));
 		draw(*e);
 	}
 	return (0);
@@ -186,29 +159,9 @@ int		main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	
-	// int		color;
-
-	// int x = 0;
-	// int y;
 	t_e 	*ptr;
 	ptr = (t_e *)malloc(sizeof(t_e) * 2);
-	// color = 0;
-	// ptr->mlx_ptr = mlx_init();
-	// ptr->img_ptr = mlx_new_image(ptr->mlx_ptr, 10000, 10000);
-	// ptr->data = mlx_get_data_addr(ptr->img_ptr, &(ptr->bpp), &(ptr->sizeline), &(ptr->endian));
 	*ptr = init(*ptr);
 	*ptr = init_window(*ptr);
-	// color = mlx_get_color_value(ptr->mlx_ptr, 0x0000FF);
-	// while (x != 100)
-	// {
-	// 	y = -1;
-	// 	while (++y != 100)
-	// 		put_pixel_to_image2(ptr, x, y, color);
-	// 	x++;
-	// }
-
-	// ptr->win_ptr = mlx_new_window(ptr->mlx_ptr, 1000, 1000, "Raycaster");
-	//mlx_put_image_to_window(ptr->mlx_ptr, ptr->win_ptr, ptr->img_ptr, 0, 0); 
-	// mlx_loop(ptr->mlx_ptr);
 	return (0);
 }
