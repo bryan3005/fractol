@@ -6,13 +6,13 @@
 #    By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/02 11:03:59 by mbryan            #+#    #+#              #
-#    Updated: 2015/02/27 12:55:57 by mbryan           ###   ########.fr        #
+#    Updated: 2015/03/10 11:42:45 by mbryan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-OBJ_NAMES = main.o get_next_line.o
+OBJ_NAMES = main2.o get_next_line.o
 
 OBJ = $(addprefix srcs/,$(OBJ_NAMES))
 

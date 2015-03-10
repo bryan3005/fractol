@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/02/27 14:43:55 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/10 12:48:05 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@
 
 typedef	struct		s_e
 {
-	void			*mlx;
-	void			*win;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	int				bpp;
+	int				endian;
+	int				sizeline;
+	char			*data;
 	double			x1;
 	double			x2;
 	double			y1;
@@ -41,8 +46,20 @@ typedef	struct		s_e
 	int				win_y;
 }					t_e;
 
+typedef struct	s_img
+{
+  void		*mlx_ptr;
+  void		*img_ptr;
+  void		*win_ptr;
+  int		bpp;
+  int		endian;
+  int		sizeline;
+  char		*data;
+}		t_img;
+
 
 int		key_hook(int keycode, t_e *e);
 void	draw(t_e e);
+void	put_pixel_to_image2(t_e *ptr, int x, int y, int color);
 
 #endif
