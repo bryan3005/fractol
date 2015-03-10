@@ -41,9 +41,9 @@ int		expose_hook(t_e *e)
 
 t_e		init(t_e e)
 {
-	e.iteration_max = 50;
-	e.win_x = 500;
-	e.win_y = 500;
+	e.iteration_max = 25;
+	e.win_x = 1000;
+	e.win_y = 1000;
 	e.x1 = -2.1;
 	e.x2 = 0.6;
 	e.y1 = -1.2;
@@ -56,10 +56,9 @@ t_e		init(t_e e)
 t_e		init_window(t_e e)
 {
 	e.mlx_ptr = mlx_init();
-	e.win_ptr = mlx_new_window(e.mlx_ptr, 500, 500, "Raycaster");
+	e.win_ptr = mlx_new_window(e.mlx_ptr, 1000, 1000, "Raycaster");
 	e.img_ptr = mlx_new_image(e.mlx_ptr, 1000, 1000);
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
-	// e.win_ptr = mlx_new_window(e.mlx_ptr, 1000, 1000, "Raycaster");
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
 	mlx_loop(e.mlx_ptr);
@@ -68,49 +67,60 @@ t_e		init_window(t_e e)
 
 int		key_hook(int key, t_e *e)
 {
-	printf("key: %d\n",key );
+	 printf("key: %d\n",key );
 	if (key == 65307)
 		exit(0);
 	if (key == 65451)
 	{
-		e->zoom_x = e->zoom_x * 1.01;
-		e->zoom_y = e->zoom_y *1.01;
-		// e->x1 += 0.2;
-		// e->x2 += 0.2;
-		// e->y1 -= 0.2;
-		// e->y2 -= 0.4;
-		 e->iteration_max = e->iteration_max +1 ;
+		e->zoom_x = e->zoom_x * 1.2;
+		e->zoom_y = e->zoom_y *1.2;
+		 e->x1 +=100 / e->zoom_x;
+		 e->x2 -= 100 / e->zoom_x;
+		 e->y1 += 100 / e->zoom_y;
+		 e->y2 -=100 / e->zoom_y;
+		 //e->iteration_max = e->iteration_max + 3;
 	}
+	if (key == 65365)
+		e->iteration_max = e->iteration_max + 10;
+	if (key == 65366)
+		e->iteration_max = e->iteration_max - 10;
 	if (key == 65453)
 	{
-		e->zoom_x = e->zoom_x / 2;
-		e->zoom_y = e->zoom_y / 2;
-		e->iteration_max = e->iteration_max - 100;
+		e->zoom_x = e->zoom_x * 0.8;
+		e->zoom_y = e->zoom_y * 0.8;
+		e->x1 -=100 / e->zoom_x;
+		 e->x2 += 100 / e->zoom_x;
+		 e->y1 -= 100 / e->zoom_y;
+		 e->y2 +=100 / e->zoom_y;
+	//	e->iteration_max = e->iteration_max - 3;
 	}
 	if (key == 65364)
 	{
-		e->y1 -= 0.5;
+		e->y1 -= 100 / e->zoom_y;
 	}
 	if (key == 65362)
 	{
-		e->y1 += 0.5;
+		e->y1 += 100 / e->zoom_y;
 	}
 	if (key == 65361)
 	{
-		e->x1 += 0.5;
+		e->x1 += 100 / e->zoom_x;
 	}
 	if (key == 65363)
 	{
-		e->x1 -= 0.5;
+		e->x1 -= 100 / e->zoom_x;
 	}
 	if (key == 117 || key == 100 || key == 65451 || key == 61 ||
 		key == 65453 || key == 45 || key == 65362 || key == 65364 ||
 		key == 65361 || key == 65363 || key == 114 ||
-		key == 112 || key == 105)
+		key == 112 || key == 105 || key == 65365 || key == 65366)
 	{
 		// *e = zoom(*e);
 		// mlx_destroy_image(e->mlx_ptr, e->img_ptr);
 		// mlx_clear_window(e->mlx_ptr, e->win_ptr);
+		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
+		e->img_ptr = mlx_new_image(e->mlx_ptr, 1000, 1000);
+		//e->data = mlx_get_data_addr(e->img_ptr, &(e->bpp), &(e->sizeline), &(e->endian));
 		draw(*e);
 	}
 	return (0);
@@ -121,12 +131,9 @@ void	draw(t_e e)
 	int x = 0;
 	int y = 0;
 	int i = 0;
-	if (x != 0)
-		mlx_destroy_image(e.mlx_ptr, e.img_ptr);
 	while (x < e.win_x)
 		{
 			y = 0;
-			// z = 0;
 			i = 0;
 			while (y < e.win_y)
 			{
@@ -201,7 +208,7 @@ int		main(int argc, char **argv)
 	// }
 
 	// ptr->win_ptr = mlx_new_window(ptr->mlx_ptr, 1000, 1000, "Raycaster");
-	mlx_put_image_to_window(ptr->mlx_ptr, ptr->win_ptr, ptr->img_ptr, 0, 0); 
+	//mlx_put_image_to_window(ptr->mlx_ptr, ptr->win_ptr, ptr->img_ptr, 0, 0); 
 	// mlx_loop(ptr->mlx_ptr);
 	return (0);
 }
