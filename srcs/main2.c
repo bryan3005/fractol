@@ -35,8 +35,8 @@ t_e		init(t_e e)
 t_e		init_window(t_e e)
 {
 	e.mlx_ptr = mlx_init();
-	e.win_ptr = mlx_new_window(e.mlx_ptr, 1000, 1000, "Raycaster");
-	e.img_ptr = mlx_new_image(e.mlx_ptr, 1000, 1000);
+	e.win_ptr = mlx_new_window(e.mlx_ptr, e.win_x, e.win_y, "Raycaster");
+	e.img_ptr = mlx_new_image(e.mlx_ptr, e.win_x, e.win_y);
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
@@ -93,27 +93,42 @@ int		key_hook(int key, t_e *e)
 		key == 112 || key == 105 || key == 65365 || key == 65366)
 	{
 		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
-		e->img_ptr = mlx_new_image(e->mlx_ptr, 1000, 1000);
+		e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
 		draw(*e);
 	}
 	return (0);
 }
+
 
 void	draw(t_e e)
 {
 	int x = 0;
 	int y = 0;
 	int i = 0;
+	double c_r;
+	double c_i;
+	double z_r ;
+	double z_i;
 	while (x < e.win_x)
 		{
 			y = 0;
 			i = 0;
 			while (y < e.win_y)
 			{
-				double c_r = x / e.zoom_x + e.x1;
-				double c_i = y / e.zoom_y + e.y1;
-				double z_r = 0;
-				double z_i = 0;
+				if (e.choise == 0)
+				{
+					 c_r = x / e.zoom_x + e.x1;
+					c_i = y / e.zoom_y + e.y1;
+					z_r = 0;
+					z_i = 0;
+				}
+				else if (e.choise == 1)
+				{
+					c_r = -0.7;
+					c_i = 0.27015;
+					z_r = x / e.zoom_x + e.x1;
+					z_i = y / e.zoom_y + e.y1;
+				}
 				i = 0;
 				while(z_r * z_r + z_i * z_i < 4 && i < e.iteration_max)
 				{
@@ -122,10 +137,10 @@ void	draw(t_e e)
 					z_i = 2 * z_i * tmp + c_i;
 					i++;
 				}
-				if (i == e.iteration_max)
-					put_pixel_to_image2(&e, x, y, 0xff0000);
-				else
-					put_pixel_to_image2(&e, x, y, 0x2eb7ed);
+				// if (i == e.iteration_max)
+				 	put_pixel_to_image2(&e, x, y, i * i);
+				// else
+				// 	put_pixel_to_image2(&e, x, y, 0x2eb7ed);
 				y++;
 			}
 			x++;
@@ -154,14 +169,38 @@ void	put_pixel_to_image2(t_e *ptr, int x, int y, int color)
     }
 }
 
+int		handle_arg(int argc, char **argv, t_e *e)
+{
+	if (argc != 2)
+	{
+		ft_putendl("Wrong number of argument");
+		ft_putendl("./fractol man\n./fractol ju \n./fractol autre");
+		return (0);
+	}
+	if (ft_strequ(argv[1], "man"))
+	{
+		e->choise = 0;
+		return (1);
+	}
+	else if (ft_strequ(argv[1], "ju"))
+	{
+		e->choise = 1;
+		return (1);
+	}
+	else
+	{
+		ft_putendl("Wrong name\n./fractol man\n./fractol ju\n./fractol autre");
+		return (0);
+	}
+}
+
 int		main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	
-	t_e 	*ptr;
-	ptr = (t_e *)malloc(sizeof(t_e) * 2);
-	*ptr = init(*ptr);
-	*ptr = init_window(*ptr);
+	t_e 	ptr;
+
+	if (handle_arg(argc, argv, &ptr) == 0)
+		return (0);	
+	ptr = init(ptr);
+	ptr = init_window(ptr);
 	return (0);
 }

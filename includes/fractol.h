@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/10 12:48:05 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/11 15:23:03 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef	struct		s_e
 	int				decala;
 	int				win_x;
 	int				win_y;
+	int				choise;
 }					t_e;
 
 typedef struct	s_img
