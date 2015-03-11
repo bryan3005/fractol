@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/11 15:23:03 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/11 16:12:11 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef	struct		s_e
 	int				decala;
 	int				win_x;
 	int				win_y;
-	int				choise;
+	int				choice;
 }					t_e;
 
 typedef struct	s_img
@@ -62,5 +62,6 @@ typedef struct	s_img
 int		key_hook(int keycode, t_e *e);
 void	draw(t_e e);
 void	put_pixel_to_image2(t_e *ptr, int x, int y, int color);
+int		mousedepl(int button, int x, int y, t_e *e);
 
 #endif

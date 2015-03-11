@@ -40,8 +40,42 @@ t_e		init_window(t_e e)
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
+	mlx_mouse_hook(e.win_ptr, mousedepl, &e);
+	// mlx_hook(e.win_ptr, 2, 3, mousedepl, &e);
 	mlx_loop(e.mlx_ptr);
 	return (e);
+}
+
+int		mousedepl(int button, int x, int y, t_e *e)
+{
+	printf("x: %d\n",x );
+	printf("y: %d\n",y );
+	printf("button: %d\n",button );
+	if (button == 4)
+	{
+		e->zoom_x = e->zoom_x * 1.2;
+		e->zoom_y = e->zoom_y *1.2;
+		 e->x1 +=x / e->zoom_x ;
+		 e->x2 -= x / e->zoom_x ;
+		 e->y1 += y / e->zoom_y ;
+		 e->y2 -=y / e->zoom_y;
+	}
+	if (button == 5)
+	{
+		e->zoom_x = e->zoom_x * 0.8;
+		e->zoom_y = e->zoom_y * 0.8;
+		e->x1 -=100 / e->zoom_x;
+		e->x2 += 100 / e->zoom_x;
+		e->y1 -= 100 / e->zoom_y;
+		e->y2 +=100 / e->zoom_y;
+	}
+	if (button == 4 || button == 5)
+	{
+		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
+		e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
+		draw(*e);
+	}
+	return (0);
 }
 
 int		key_hook(int key, t_e *e)
@@ -115,14 +149,14 @@ void	draw(t_e e)
 			i = 0;
 			while (y < e.win_y)
 			{
-				if (e.choise == 0)
+				if (e.choice == 0)
 				{
 					 c_r = x / e.zoom_x + e.x1;
 					c_i = y / e.zoom_y + e.y1;
 					z_r = 0;
 					z_i = 0;
 				}
-				else if (e.choise == 1)
+				else if (e.choice == 1)
 				{
 					c_r = -0.7;
 					c_i = 0.27015;
@@ -137,10 +171,7 @@ void	draw(t_e e)
 					z_i = 2 * z_i * tmp + c_i;
 					i++;
 				}
-				// if (i == e.iteration_max)
 				 	put_pixel_to_image2(&e, x, y, i * i);
-				// else
-				// 	put_pixel_to_image2(&e, x, y, 0x2eb7ed);
 				y++;
 			}
 			x++;
@@ -179,12 +210,12 @@ int		handle_arg(int argc, char **argv, t_e *e)
 	}
 	if (ft_strequ(argv[1], "man"))
 	{
-		e->choise = 0;
+		e->choice = 0;
 		return (1);
 	}
 	else if (ft_strequ(argv[1], "ju"))
 	{
-		e->choise = 1;
+		e->choice = 1;
 		return (1);
 	}
 	else
