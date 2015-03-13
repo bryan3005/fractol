@@ -70,6 +70,16 @@ t_e		init(t_e e)
 	return (e);
 }
 
+int                motion_hook(int x, int y, t_e *e)
+{
+	if (e->choice == JU)
+	{
+		printf("x: %d\n",x );
+		printf("y: %d\n",y );
+	}
+	return(0);
+}
+
 t_e		init_window(t_e e)
 {
 	e.mlx_ptr = mlx_init();
@@ -78,11 +88,13 @@ t_e		init_window(t_e e)
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
+	 mlx_hook(e.win_ptr, 6, 64, motion_hook, &e);
 	mlx_mouse_hook(e.win_ptr, mousedepl, &e);
 	// mlx_hook(e.win_ptr, 2, 3, mousedepl, &e);
 	mlx_loop(e.mlx_ptr);
 	return (e);
 }
+
 
 int		mousedepl(int button, int x, int y, t_e *e)
 {
