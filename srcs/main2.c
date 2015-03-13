@@ -20,15 +20,28 @@ int		expose_hook(t_e *e)
 
 t_e		init(t_e e)
 {
-	e.iteration_max = 25;
 	e.win_x = 1000;
 	e.win_y = 1000;
-	e.x1 = -2.1;
-	e.x2 = 0.6;
-	e.y1 = -1.2;
-	e.y2 = 1.2;
-	e.zoom_x = e.win_x / (e.x2 - e.x1);
-	e.zoom_y = e.win_y / (e.y2 - e.y1);
+	if (e.choice == MAN)
+	{
+		e.iteration_max = 25;
+		e.x1 = -2.1;
+		e.x2 = 0.6;
+		e.y1 = -1.2;
+		e.y2 = 1.2;
+		e.zoom_x = e.win_x / (e.x2 - e.x1);
+		e.zoom_y = e.win_y / (e.y2 - e.y1);
+	}
+	else  if (e.choice == JU)
+	{
+		e.iteration_max = 75;
+		e.x1 = -1.6;
+		e.x2 = 0.6;
+		e.y1 = -1.2;
+		e.y2 = 0.6;
+		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
+		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
+	}
 	return (e);
 }
 
@@ -53,21 +66,21 @@ int		mousedepl(int button, int x, int y, t_e *e)
 	printf("button: %d\n",button );
 	if (button == 4)
 	{
-		e->zoom_x = e->zoom_x * 1.2;
-		e->zoom_y = e->zoom_y *1.2;
-		 e->x1 +=x / e->zoom_x ;
-		 e->x2 -= x / e->zoom_x ;
-		 e->y1 += y / e->zoom_y ;
-		 e->y2 -=y / e->zoom_y;
+		 e->zoom_x = e->zoom_x * 1.2;
+		 e->zoom_y = e->zoom_y *1.2;
+		   e->x1 += (x / 4)/ e->zoom_x;
+		  e->x2 -= (x / 4) / e->zoom_x;
+		 e->y1 += (y / 4) / e->zoom_y;
+		  e->y2 -= (y / 4) / e->zoom_y;
 	}
 	if (button == 5)
 	{
 		e->zoom_x = e->zoom_x * 0.8;
 		e->zoom_y = e->zoom_y * 0.8;
-		e->x1 -=100 / e->zoom_x;
-		e->x2 += 100 / e->zoom_x;
-		e->y1 -= 100 / e->zoom_y;
-		e->y2 +=100 / e->zoom_y;
+		 e->x1 -= (x / 4)/ e->zoom_x;
+		  e->x2 += (x / 4) / e->zoom_x;
+		 e->y1 -= (y / 4) / e->zoom_y;
+		  e->y2 += (y / 4) / e->zoom_y;
 	}
 	if (button == 4 || button == 5)
 	{
@@ -94,7 +107,7 @@ int		key_hook(int key, t_e *e)
 	}
 	if (key == 65365)
 		e->iteration_max = e->iteration_max + 10;
-	if (key == 65366 && e->iteration_max > 10)
+	if (key == 65366 && e->iteration_max > 25)
 		e->iteration_max = e->iteration_max - 10;
 	if (key == 65453 || key == 45)
 	{
@@ -149,14 +162,14 @@ void	draw(t_e e)
 			i = 0;
 			while (y < e.win_y)
 			{
-				if (e.choice == 0)
+				if (e.choice == MAN)
 				{
 					 c_r = x / e.zoom_x + e.x1;
 					c_i = y / e.zoom_y + e.y1;
 					z_r = 0;
 					z_i = 0;
 				}
-				else if (e.choice == 1)
+				else if (e.choice == JU)
 				{
 					c_r = -0.7;
 					c_i = 0.27015;
@@ -210,12 +223,12 @@ int		handle_arg(int argc, char **argv, t_e *e)
 	}
 	if (ft_strequ(argv[1], "man"))
 	{
-		e->choice = 0;
+		e->choice = MAN;
 		return (1);
 	}
 	else if (ft_strequ(argv[1], "ju"))
 	{
-		e->choice = 1;
+		e->choice = JU;
 		return (1);
 	}
 	else

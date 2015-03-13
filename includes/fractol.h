@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/11 16:12:11 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/13 12:15:47 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <stdio.h>
 #include <mlx.h>
 #include <math.h>
+
+enum e_fractol
+{
+	MAN, JU, AUTRE 
+};
 
 typedef	struct		s_e
 {
