@@ -12,6 +12,31 @@
 
 #include "fractol.h"
 
+t_e		reset(t_e e)
+{
+	if (e.choice == MAN)
+	{
+		e.iteration_max = 25;
+		e.x1 = -2.1;
+		e.x2 = 0.6;
+		e.y1 = -1.2;
+		e.y2 = 1.2;
+		e.zoom_x = e.win_x / (e.x2 - e.x1);
+		e.zoom_y = e.win_y / (e.y2 - e.y1);
+	}
+	else  if (e.choice == JU)
+	{
+		e.iteration_max = 75;
+		e.x1 = -1.6;
+		e.x2 = 0.6;
+		e.y1 = -1.2;
+		e.y2 = 0.6;
+		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
+		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
+	}
+	return (e);
+}
+
 int		expose_hook(t_e *e)
 {
 	draw(*e);
@@ -61,26 +86,27 @@ t_e		init_window(t_e e)
 
 int		mousedepl(int button, int x, int y, t_e *e)
 {
-	printf("x: %d\n",x );
-	printf("y: %d\n",y );
-	printf("button: %d\n",button );
+	// printf("x: %d\n",x );
+	// printf("y: %d\n",y );
+	// printf("button: %d\n",button );
+	double div = 5;
 	if (button == 4)
 	{
 		 e->zoom_x = e->zoom_x * 1.2;
 		 e->zoom_y = e->zoom_y *1.2;
-		   e->x1 += (x / 4)/ e->zoom_x;
-		  e->x2 -= (x / 4) / e->zoom_x;
-		 e->y1 += (y / 4) / e->zoom_y;
-		  e->y2 -= (y / 4) / e->zoom_y;
+		   e->x1 += (x / div)/ e->zoom_x;
+		  e->x2 -= (x / div) / e->zoom_x;
+		 e->y1 += (y / div) / e->zoom_y;
+		  e->y2 -= (y / div) / e->zoom_y;
 	}
 	if (button == 5)
 	{
 		e->zoom_x = e->zoom_x * 0.8;
 		e->zoom_y = e->zoom_y * 0.8;
-		 e->x1 -= (x / 4)/ e->zoom_x;
-		  e->x2 += (x / 4) / e->zoom_x;
-		 e->y1 -= (y / 4) / e->zoom_y;
-		  e->y2 += (y / 4) / e->zoom_y;
+		 e->x1 -= (x / div)/ e->zoom_x;
+		  e->x2 += (x / div) / e->zoom_x;
+		 e->y1 -= (y / div) / e->zoom_y;
+		  e->y2 += (y / div) / e->zoom_y;
 	}
 	if (button == 4 || button == 5)
 	{
@@ -129,6 +155,10 @@ int		key_hook(int key, t_e *e)
 	if (key == 65361)
 	{
 		e->x1 += 100 / e->zoom_x;
+	}
+	if (key == 114)
+	{
+		*e = reset(*e);
 	}
 	if (key == 65363)
 	{

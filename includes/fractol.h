@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/13 12:15:47 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/13 14:26:01 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ typedef	struct		s_e
 	double			iteration_max;
 	double			zoom_x;
 	double			zoom_y;
-	double			decalx;
-	double			decaly;
-	double			angle1;
-	double			angle2;
-	int				decala;
 	int				win_x;
 	int				win_y;
 	int				choice;
