@@ -37,7 +37,8 @@ int		handle_arg(int argc, char **argv, t_e *e)
 		return (1);
 	else
 	{
-		ft_putendl_fd("Wrong name\n./fractol man\n./fractol ju\n./fractol bs", 2);
+		ft_putendl_fd("Wrong name\n./fractol man\n./fractol ju\n./fractol bs"
+		, 2);
 		return (0);
 	}
 }
