@@ -33,6 +33,8 @@ t_e		reset(t_e e)
 		e.y2 = 0.6;
 		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
 		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
+		e.c_r = -0.7;
+		e.c_i = 0.27015;
 	}
 	return (e);
 }
@@ -47,6 +49,7 @@ t_e		init(t_e e)
 {
 	e.win_x = 1000;
 	e.win_y = 1000;
+	e.activate_mouse = NO;
 	if (e.choice == MAN)
 	{
 		e.iteration_max = 25;
@@ -66,19 +69,12 @@ t_e		init(t_e e)
 		e.y2 = 0.6;
 		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
 		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
+		e.c_r = -0.7;
+					e.c_i = 0.27015;
 	}
 	return (e);
 }
 
-int                motion_hook(int x, int y, t_e *e)
-{
-	if (e->choice == JU)
-	{
-		printf("x: %d\n",x );
-		printf("y: %d\n",y );
-	}
-	return(0);
-}
 
 t_e		init_window(t_e e)
 {
@@ -88,7 +84,9 @@ t_e		init_window(t_e e)
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
+	if (e.choice == JU)
 	 mlx_hook(e.win_ptr, 6, 64, motion_hook, &e);
+
 	mlx_mouse_hook(e.win_ptr, mousedepl, &e);
 	// mlx_hook(e.win_ptr, 2, 3, mousedepl, &e);
 	mlx_loop(e.mlx_ptr);
@@ -172,6 +170,10 @@ int		key_hook(int key, t_e *e)
 	{
 		*e = reset(*e);
 	}
+	if (key == 97)
+		e->activate_mouse = YES;
+	if (key == 100)
+		e->activate_mouse = NO;
 	if (key == 65363)
 	{
 		e->x1 -= 100 / e->zoom_x;
@@ -188,14 +190,45 @@ int		key_hook(int key, t_e *e)
 	return (0);
 }
 
+int                motion_hook(int x, int y, t_e *e)
+ {
+	double tmpre;
+	 double tmpim;
+	 
+	 if (e->activate_mouse == NO)
+	 	return (0);
+
+	if (e->choice == JU && e->activate_mouse == YES)
+	{
+		tmpre = e->c_r;
+		if (e->c_r < -1.5)
+		{
+			tmpre = e->c_r  + ((double)x / 1000);
+			tmpim = e->c_i + ((double)y / 1000);
+		}
+		else
+		{
+			tmpre = e->c_r - ((double)x / 100000 );
+			tmpim = e->c_i - ((double)y / 100000);
+		}
+		e->c_r = tmpre;
+		e->c_i = tmpim;
+	
+		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
+		e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
+		draw(*e);
+	}
+ 	return(0);
+}
+
 
 void	draw(t_e e)
 {
 	int x = 0;
 	int y = 0;
 	int i = 0;
-	double c_r;
-	double c_i;
+	// double c_r;
+	// double c_i;
 	double z_r ;
 	double z_i;
 	while (x < e.win_x)
@@ -206,15 +239,14 @@ void	draw(t_e e)
 			{
 				if (e.choice == MAN)
 				{
-					 c_r = x / e.zoom_x + e.x1;
-					c_i = y / e.zoom_y + e.y1;
+					e.c_r = x / e.zoom_x + e.x1;
+					e.c_i = y / e.zoom_y + e.y1;
 					z_r = 0;
 					z_i = 0;
 				}
 				else if (e.choice == JU)
 				{
-					c_r = -0.7;
-					c_i = 0.27015;
+					
 					z_r = x / e.zoom_x + e.x1;
 					z_i = y / e.zoom_y + e.y1;
 				}
@@ -222,8 +254,8 @@ void	draw(t_e e)
 				while(z_r * z_r + z_i * z_i < 4 && i < e.iteration_max)
 				{
 					double tmp = z_r;
-					z_r = z_r * z_r - z_i * z_i + c_r;
-					z_i = 2 * z_i * tmp + c_i;
+					z_r = z_r * z_r - z_i * z_i + e.c_r;
+					z_i = 2 * z_i * tmp + e.c_i;
 					i++;
 				}
 				 	put_pixel_to_image2(&e, x, y, i * i);

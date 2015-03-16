@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/13 14:26:01 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 11:33:14 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 enum e_fractol
 {
 	MAN, JU, AUTRE 
+};
+
+enum e_activ
+{
+	YES, NO 
 };
 
 typedef	struct		s_e
@@ -45,6 +50,9 @@ typedef	struct		s_e
 	int				win_x;
 	int				win_y;
 	int				choice;
+	double			c_r;
+	double			c_i;
+	int				activate_mouse;
 }					t_e;
 
 typedef struct	s_img
@@ -63,5 +71,6 @@ int		key_hook(int keycode, t_e *e);
 void	draw(t_e e);
 void	put_pixel_to_image2(t_e *ptr, int x, int y, int color);
 int		mousedepl(int button, int x, int y, t_e *e);
+int                motion_hook(int x, int y, t_e *e);
 
 #endif
