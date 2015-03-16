@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 13:57:49 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 15:53:49 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define FRACTOL_H
 
 #include "libft.h"
-#include "get_next_line.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -54,6 +53,8 @@ typedef	struct		s_e
 	double			c_i;
 	int				activate_mouse;
 	int				event;
+	double			z_r;
+	double			z_i;
 }					t_e;
 
 typedef struct	s_img
@@ -70,8 +71,14 @@ typedef struct	s_img
 
 int		key_hook(int keycode, t_e *e);
 void	draw(t_e e);
-void	put_pixel_to_image2(t_e *ptr, int x, int y, int color);
+void	put_pixel_to_image(t_e *ptr, int x, int y, int color);
 int		mousedepl(int button, int x, int y, t_e *e);
 int                motion_hook(int x, int y, t_e *e);
+t_e		init_window(t_e e);
+int		expose_hook(t_e *e);
+int		key_hook(int key, t_e *e);
+int		motion_hook(int x, int y, t_e *e);
+t_e		init(t_e e);
+void	draw(t_e e);
 
 #endif
