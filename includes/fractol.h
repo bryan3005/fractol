@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 16:07:58 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 17:02:11 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <mlx.h>
 # include <math.h>
 

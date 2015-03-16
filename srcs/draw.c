@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/16 15:42:41 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 16:19:01 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 18:00:57 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ void	draw(t_e e)
 			i = -1;
 			while (e.z_r * e.z_r + e.z_i * e.z_i < 4 && ++i < e.iteration_max)
 				draw3(&e);
-			put_pixel_to_image(&e, x, y, i * i);
+			if (i == e.iteration_max)
+				put_pixel_to_image(&e, x, y, 0xdf0030);
+			else
+				put_pixel_to_image(&e, x, y, 0x88 + i * i);
 		}
 	}
 	mlx_put_image_to_window(e.mlx_ptr, e.win_ptr, e.img_ptr, 0, 0);

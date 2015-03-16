@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/16 15:13:14 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 16:29:00 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 17:49:19 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_e		init_man(t_e e)
 
 t_e		init_ju(t_e e)
 {
-	e.iteration_max = 55;
+	e.iteration_max = 56;
 	e.x1 = -1.6;
 	e.x2 = 0.6;
 	e.y1 = -1.2;
@@ -58,8 +58,8 @@ t_e		init_bs(t_e e)
 
 t_e		init(t_e e)
 {
-	e.win_x = 1000;
-	e.win_y = 1000;
+	e.win_x = 500;
+	e.win_y = 500;
 	e.activate_mouse = NO;
 	if (e.choice == MAN)
 		e = init_man(e);
