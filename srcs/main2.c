@@ -36,6 +36,16 @@ t_e		reset(t_e e)
 		e.c_r = -0.7;
 		e.c_i = 0.27015;
 	}
+	else if(e.choice == BS)
+	{
+		e.iteration_max = 25;
+		e.x1 = -2.6;
+		e.x2 = 0.1;
+		e.y1 = -3;
+		e.y2 = 0;
+		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
+		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
+	}
 	return (e);
 }
 
@@ -70,18 +80,20 @@ t_e		init(t_e e)
 		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
 		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
 		e.c_r = -0.7;
-					e.c_i = 0.27015;
+		e.c_i = 0.27015;
+	}
+	else if(e.choice == BS)
+	{
+		e.iteration_max = 25;
+		e.x1 = -2.6;
+		e.x2 = 0.1;
+		e.y1 = -3;
+		e.y2 = 0;
+		e.zoom_x = e.win_x / ((e.x2 - e.x1) * 1.5);
+		e.zoom_y = e.win_y / ((e.y2 - e.y1) * 1.5);
 	}
 	return (e);
 }
-
-// int		loop_hook(t_e *e)
-// {
-// 	if (e->event == 1)
-// 		expose_hook(e);
-// 	e->event = 0;
-// 	return (0);
-// }
 
 t_e		init_window(t_e e)
 {
@@ -93,7 +105,6 @@ t_e		init_window(t_e e)
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
 	if (e.choice == JU)
 		mlx_hook(e.win_ptr, 6, 64, motion_hook, &e);
-	// mlx_loop_hook(e.win_ptr, loop_hook, &e);
 	mlx_mouse_hook(e.win_ptr, mousedepl, &e);
 	mlx_loop(e.mlx_ptr);
 	return (e);
@@ -102,9 +113,6 @@ t_e		init_window(t_e e)
 
 int		mousedepl(int button, int x, int y, t_e *e)
 {
-	// printf("x: %d\n",x );
-	// printf("y: %d\n",y );
-	// printf("button: %d\n",button );
 	double div = 5;
 	if (button == 4)
 	{
@@ -195,8 +203,6 @@ int                motion_hook(int x, int y, t_e *e)
 		e->c_r = -0.7 + ((double)x/2 - 500) / 1000;
 		e->c_i = 0.27015 + ((double)y/2 - 500) / 1000;
 		e->event = 1;
-		//mlx_destroy_image(e->mlx_ptr, e->img_ptr);
-		//e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
 		draw(*e);
 	}
  	return (0);
@@ -208,8 +214,6 @@ void	draw(t_e e)
 	int x = 0;
 	int y = 0;
 	int i = 0;
-	// double c_r;
-	// double c_i;
 	double z_r ;
 	double z_i;
 	while (x < e.win_x)
@@ -231,12 +235,23 @@ void	draw(t_e e)
 					z_r = x / e.zoom_x + e.x1;
 					z_i = y / e.zoom_y + e.y1;
 				}
+				else if (e.choice == BS)
+				{
+					e.c_r = x / e.zoom_x + e.x1;
+					e.c_i = y / e.zoom_y + e.y1;
+					z_r = 0;
+					z_i = 0;
+				}
 				i = 0;
 				while(z_r * z_r + z_i * z_i < 4 && i < e.iteration_max)
 				{
 					double tmp = z_r;
 					z_r = z_r * z_r - z_i * z_i + e.c_r;
+					if (z_r < 0 && e.choice == BS)
+						z_r *= -1;
 					z_i = 2 * z_i * tmp + e.c_i;
+					if (z_i < 0 && e.choice == BS)
+						z_i *= -1;
 					i++;
 				}
 				 	put_pixel_to_image2(&e, x, y, i * i);
@@ -273,7 +288,7 @@ int		handle_arg(int argc, char **argv, t_e *e)
 	if (argc != 2)
 	{
 		ft_putendl("Wrong number of argument");
-		ft_putendl("./fractol man\n./fractol ju \n./fractol autre");
+		ft_putendl("./fractol man\n./fractol ju \n./fractol bs");
 		return (0);
 	}
 	if (ft_strequ(argv[1], "man"))
@@ -286,9 +301,14 @@ int		handle_arg(int argc, char **argv, t_e *e)
 		e->choice = JU;
 		return (1);
 	}
+	else if (ft_strequ(argv[1], "bs"))
+	{
+		e->choice = BS;
+		return (1);
+	}
 	else
 	{
-		ft_putendl("Wrong name\n./fractol man\n./fractol ju\n./fractol autre");
+		ft_putendl("Wrong name\n./fractol man\n./fractol ju\n./fractol bs");
 		return (0);
 	}
 }
