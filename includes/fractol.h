@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 12:54:30 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 11:33:14 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 12:56:47 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef	struct		s_e
 	double			c_r;
 	double			c_i;
 	int				activate_mouse;
+	int				event;
 }					t_e;
 
 typedef struct	s_img

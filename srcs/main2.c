@@ -26,7 +26,7 @@ t_e		reset(t_e e)
 	}
 	else  if (e.choice == JU)
 	{
-		e.iteration_max = 75;
+		e.iteration_max = 55;
 		e.x1 = -1.6;
 		e.x2 = 0.6;
 		e.y1 = -1.2;
@@ -62,7 +62,7 @@ t_e		init(t_e e)
 	}
 	else  if (e.choice == JU)
 	{
-		e.iteration_max = 75;
+		e.iteration_max = 55;
 		e.x1 = -1.6;
 		e.x2 = 0.6;
 		e.y1 = -1.2;
@@ -75,6 +75,13 @@ t_e		init(t_e e)
 	return (e);
 }
 
+// int		loop_hook(t_e *e)
+// {
+// 	if (e->event == 1)
+// 		expose_hook(e);
+// 	e->event = 0;
+// 	return (0);
+// }
 
 t_e		init_window(t_e e)
 {
@@ -85,10 +92,9 @@ t_e		init_window(t_e e)
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
 	mlx_hook(e.win_ptr, 2, 3, key_hook, &e);
 	if (e.choice == JU)
-	 mlx_hook(e.win_ptr, 6, 64, motion_hook, &e);
-
+		mlx_hook(e.win_ptr, 6, 64, motion_hook, &e);
+	// mlx_loop_hook(e.win_ptr, loop_hook, &e);
 	mlx_mouse_hook(e.win_ptr, mousedepl, &e);
-	// mlx_hook(e.win_ptr, 2, 3, mousedepl, &e);
 	mlx_loop(e.mlx_ptr);
 	return (e);
 }
@@ -155,29 +161,19 @@ int		key_hook(int key, t_e *e)
 		 e->y2 +=100 / e->zoom_y;
 	}
 	if (key == 65364)
-	{
 		e->y1 -= 100 / e->zoom_y;
-	}
 	if (key == 65362)
-	{
 		e->y1 += 100 / e->zoom_y;
-	}
 	if (key == 65361)
-	{
 		e->x1 += 100 / e->zoom_x;
-	}
 	if (key == 114)
-	{
 		*e = reset(*e);
-	}
 	if (key == 97)
 		e->activate_mouse = YES;
 	if (key == 100)
 		e->activate_mouse = NO;
 	if (key == 65363)
-	{
 		e->x1 -= 100 / e->zoom_x;
-	}
 	if (key == 117 || key == 100 || key == 65451 || key == 61 ||
 		key == 65453 || key == 45 || key == 65362 || key == 65364 ||
 		key == 65361 || key == 65363 || key == 114 ||
@@ -192,33 +188,18 @@ int		key_hook(int key, t_e *e)
 
 int                motion_hook(int x, int y, t_e *e)
  {
-	double tmpre;
-	 double tmpim;
-	 
-	 if (e->activate_mouse == NO)
+	if (e->activate_mouse == NO)
 	 	return (0);
-
 	if (e->choice == JU && e->activate_mouse == YES)
 	{
-		tmpre = e->c_r;
-		if (e->c_r < -1.5)
-		{
-			tmpre = e->c_r  + ((double)x / 1000);
-			tmpim = e->c_i + ((double)y / 1000);
-		}
-		else
-		{
-			tmpre = e->c_r - ((double)x / 100000 );
-			tmpim = e->c_i - ((double)y / 100000);
-		}
-		e->c_r = tmpre;
-		e->c_i = tmpim;
-	
-		mlx_destroy_image(e->mlx_ptr, e->img_ptr);
-		e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
+		e->c_r = -0.7 + ((double)x/2 - 500) / 1000;
+		e->c_i = 0.27015 + ((double)y/2 - 500) / 1000;
+		e->event = 1;
+		//mlx_destroy_image(e->mlx_ptr, e->img_ptr);
+		//e->img_ptr = mlx_new_image(e->mlx_ptr, e->win_x , e->win_y);
 		draw(*e);
 	}
- 	return(0);
+ 	return (0);
 }
 
 
