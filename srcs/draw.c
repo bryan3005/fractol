@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/16 15:42:41 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 15:53:58 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 16:19:01 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ void	draw2(t_e *e, int x, int y)
 	{
 		e->z_r = x / e->zoom_x + e->x1;
 		e->z_i = y / e->zoom_y + e->y1;
+	}
+	else if (e->choice == OT)
+	{
+		e->c_r = x / e->zoom_x + e->x1;
+		if (e->c_r < 0)
+			e->c_r *= -1;
+		e->c_i = y / e->zoom_y + e->y1;
+		if (e->c_i < 0)
+			e->c_i *= -1;
+		e->z_r = 0;
+		e->z_i = 0;
 	}
 }
 

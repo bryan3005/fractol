@@ -6,7 +6,7 @@
 /*   By: mbryan <mbryan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/16 15:13:14 by mbryan            #+#    #+#             */
-/*   Updated: 2015/03/16 15:54:01 by mbryan           ###   ########.fr       */
+/*   Updated: 2015/03/16 16:29:00 by mbryan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 t_e		init_man(t_e e)
 {
 	e.iteration_max = 25;
-	e.x1 = -2.1;
-	e.x2 = 0.6;
+	if (e.choice == MAN)
+		e.x1 = -2.1;
+	else if (e.choice == OT)
+		e.x1 = -1.5;
+	if (e.choice == MAN)
+		e.x2 = 1.5;
+	else if (e.choice == OT)
+		e.x2 = 1.5;
 	e.y1 = -1.2;
 	e.y2 = 1.2;
 	e.zoom_x = e.win_x / (e.x2 - e.x1);
@@ -61,13 +67,14 @@ t_e		init(t_e e)
 		e = init_ju(e);
 	else if (e.choice == BS)
 		e = init_bs(e);
+	else if (e.choice == OT)
+		e = init_man(e);
 	return (e);
 }
 
 t_e		init_window(t_e e)
 {
-	e.mlx_ptr = mlx_init();
-	e.win_ptr = mlx_new_window(e.mlx_ptr, e.win_x, e.win_y, "Raycaster");
+	e.win_ptr = mlx_new_window(e.mlx_ptr, e.win_x, e.win_y, "Fractol");
 	e.img_ptr = mlx_new_image(e.mlx_ptr, e.win_x, e.win_y);
 	e.data = mlx_get_data_addr(e.img_ptr, &(e.bpp), &(e.sizeline), &(e.endian));
 	mlx_expose_hook(e.win_ptr, expose_hook, &e);
